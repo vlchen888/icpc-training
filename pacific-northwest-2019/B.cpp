@@ -16,19 +16,18 @@ int main() {
         cin >> x[i];
         last[x[i]] = i;
     }
-    vi sub;
-    set<int> s;
+    vi sub, present(k+1,0);;
     for (int i = 1; i <= n; i++) {
-        if (s.find(x[i]) != s.end()) continue;
+        if (present[x[i]]) continue;
         while (!sub.empty() && sub.back() > x[i]) {
             if (i < last[sub.back()]) {
-                s.erase(sub.back());
+                present[sub.back()] = 0;
                 sub.pop_back();
             } else {
                 break;
             }
         }
-        s.insert(x[i]);
+        present[x[i]] = 1;
         sub.push_back(x[i]);
     }
     for (int z : sub) {
