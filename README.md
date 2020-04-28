@@ -7,6 +7,7 @@ MAPS (Mount Allison Programming Showdown) 2019: https://maps19.kattis.com
 
 SoCal level:
 Pacific Northwest Regional 2019: https://codeforces.com/gym/102433/
+UCF Local 2019: https://codeforces.com/gym/102343
 
 Between SoCal and NAC:
 MAPS 2020: https://maps20.kattis.com  (not many solutions in repo)
