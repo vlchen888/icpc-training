@@ -13,10 +13,9 @@ const ll MAXN = 1000001;
 ll N, K;
 
 vi edges[MAXN], children[MAXN];
-int par[MAXN], parnewname[MAXN];
+int par[MAXN], back[MAXN];
 int visited[MAXN];
 ll triangles;
-vector<pair<int, int>> backs;
 
 int newname;
 void dfs(int curr) {
@@ -27,17 +26,19 @@ void dfs(int curr) {
             if (par[par[curr]] == next) {
                 triangles++;
             } else {
-                backs.push_back({visited[next], visited[curr]});
+                if (back[next] == par[curr]) triangles++;
+                back[next] = curr;
             }
         } else {
             par[next] = curr;
             dfs(next);
-            parnewname[visited[next]] = visited[curr];
         }
     }
 }
 
 int main() {
+    cin.tie(0);
+    cin.sync_with_stdio(0);
     triangles = 0;
     cin >> N >> K;
     for (int i = 0; i < K; i++) {
@@ -47,11 +48,6 @@ int main() {
     }
     for (int i = 1; i <= N; i++) {
         if (!visited[i]) dfs(i);
-    }
-
-    sort(all(backs));
-    for (int i = 0; i < backs.size() - 1; i++) {
-        if (parnewname[backs[i+1].second] == backs[i].second) triangles++;
     }
 
     ll twice = 0;
