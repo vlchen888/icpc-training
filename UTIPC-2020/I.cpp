@@ -8,90 +8,119 @@ int main() {
 
   int n; cin >> n;
   int f[n], g[n];
-  unordered_map<int, unordered_set<int> > fm, gm;
+  vector<int> countf(1e5+1, 0), countg(1e5+1, 0);
+  unordered_set<int> uniqf, nuniqf, uniqg, nuniqg; // best names 2k20
+  unordered_map<int, unordered_set<int> > fback, gback;
   for(int i = 0; i<n; ++i) {
     cin >> f[i];
-    fm[f[i]].insert(i);
+    countf[f[i]]++;
+    fback[f[i]].insert(i);
   }
   for(int i = 0; i<n; ++i) {
     cin >> g[i];
-    gm[g[i]].insert(i);
+    countg[g[i]]++;
+    gback[g[i]].insert(i);
+  }
+  for(int i = 0; i<1e5+1; ++i) {
+    if(countf[i] > 0) {
+      if(countf[i] == 1) uniqf.insert(i);
+      else               nuniqf.insert(i);
+    }
+    if(countg[i] > 0) {
+      if(countg[i] == 1) uniqg.insert(i);
+      else               nuniqg.insert(i);
+    }
   }
   int w; cin >> w;
   for(int i = 0; i<w; ++i) {
     string s; cin >> s;
     if(s == "YES") {
       if(i % 2 == 0) {
-        vector<int> to_delete;
-        for(auto it : fm) {
-          if(it.second.size() != 1) {
-            to_delete.push_back(it.first);
-            for(auto x : it.second) {
-              gm[g[x]].erase(gm[g[x]].find(x));
+        for(auto y : nuniqf) {
+          for(auto x : fback[y]) {
+            countg[g[x]]--;
+            gback[g[x]].erase(x);
+            if(countg[g[x]] == 1) {
+              nuniqg.erase(g[x]);
+              uniqg.insert(g[x]);
+            }
+            if(countg[g[x]] == 0) {
+              uniqg.erase(g[x]);
             }
           }
+          fback.erase(y);
+          countf[y] = 0;
         }
-        for(auto tod : to_delete) {
-          fm.erase(fm.find(tod));
-        }
+        nuniqf.clear();
       }
       else {
-        vector<int> to_delete;
-        for(auto it : gm) {
-          if(it.second.size() != 1) {
-            to_delete.push_back(it.first);
-            for(auto x : it.second) {
-              fm[f[x]].erase(fm[f[x]].find(x));
+        for(auto y : nuniqg) {
+          for(auto x : gback[y]) {
+            countf[f[x]]--;
+            fback[f[x]].erase(x);
+            if(countf[f[x]] == 1) {
+              nuniqf.erase(f[x]);
+              uniqf.insert(f[x]);
+            }
+            if(countf[f[x]] == 0) {
+              uniqf.erase(f[x]);
             }
           }
+          gback.erase(y);
+          countg[y] = 0;
         }
-        for(auto tod : to_delete) {
-          gm.erase(gm.find(tod));
-        }
+        nuniqg.clear();
       }
     }
     else {
       if(i % 2 == 0) {
-        vector<int> to_delete;
-        for(auto it : fm) {
-          if(it.second.size() == 1) {
-            to_delete.push_back(it.first);
-            for(auto x : it.second) {
-              gm[g[x]].erase(gm[g[x]].find(x));
+        for(auto y : uniqf) {
+          for(auto x : fback[y]) {
+            countg[g[x]]--;
+            gback[g[x]].erase(x);
+            if(countg[g[x]] == 1) {
+              nuniqg.erase(g[x]);
+              uniqg.insert(g[x]);
+            }
+            if(countg[g[x]] == 0) {
+              uniqg.erase(g[x]);
             }
           }
+          fback.erase(y);
+          countf[y] = 0;
         }
-        for(auto tod : to_delete) {
-          fm.erase(fm.find(tod));
-        }
+        uniqf.clear();
       }
       else {
-        vector<int> to_delete;
-        for(auto it : gm) {
-          if(it.second.size() == 1) {
-            to_delete.push_back(it.first);
-            for(auto x : it.second) {
-              fm[f[x]].erase(fm[f[x]].find(x));
+        for(auto y : uniqg) {
+          for(auto x : gback[y]) {
+            countf[f[x]]--;
+            fback[f[x]].erase(x);
+            if(countf[f[x]] == 1) {
+              nuniqf.erase(f[x]);
+              uniqf.insert(f[x]);
+            }
+            if(countf[f[x]] == 0) {
+              uniqf.erase(f[x]);
             }
           }
+          gback.erase(y);
+          countg[y] = 0;
         }
-        for(auto tod : to_delete) {
-          gm.erase(gm.find(tod));
-        }
+        uniqg.clear();
       }
     }
   }
 
-  vector<int> cands;
-  for(auto it : fm) {
-    for(auto x : it.second) {
-      cands.push_back(x);
+  vector<int> poss;
+  for(int i = 0; i<n; ++i) {
+    if(countf[f[i]] > 0 && countg[g[i]] > 0) {
+      poss.push_back(i);
     }
   }
-  if(cands.size() == 0) {cout << -1 << endl;}
+  if(poss.size() == 0) {cout << -1 << endl;}
   else {
-    sort(cands.begin(), cands.end());
-    for(auto x : cands) {
+    for(auto x : poss) {
       cout << x+1 << " ";
     }
     cout << endl;
