@@ -21,24 +21,28 @@ int main() {
     }
   }
 
+  // O(n^2 2^n) is too slow!  We need O(n 2^n) instead
+  vector<pair<int, int> > stateorder;
+  for(int i = 0; i<(1<<n); ++i) {
+    stateorder.push_back(make_pair(__builtin_popcount(i), i));
+  }
+  sort(stateorder.begin(), stateorder.end());
+
   long long MOD = 1e9+7;
-  vector<long long> dp(1<<n, 0), dpnext(1<<n, 0);
+  vector<long long> dp(1<<n, 0);
   dp[0] = 1;
-  for(int i = 0; i<n; ++i) {
-    dpnext.assign(1<<n, 0);
-    for(int j = 0; j<(1<<n); ++j) {
-      if(dp[j] == -1) continue;
-      for(int l = 0; l<adj[i].size(); ++l) {
-        // for all possible pairings for i...
-        int k = adj[i][l];
-        if((j >> k) & 1) {
-          // make sure they're not already taken
-          continue;
-        }
-        dpnext[j+(1<<k)] = (dpnext[j+(1<<k)] + dp[j]) % MOD;
+  for(int jj = 0; jj<(1<<n)-1; ++jj) {
+    int i = stateorder[jj].first;
+    int j = stateorder[jj].second;
+    for(int l = 0; l<adj[i].size(); ++l) {
+      // for all possible pairings for i...
+      int k = adj[i][l];
+      if((j >> k) & 1) {
+        // make sure they're not already taken
+        continue;
       }
+      dp[j+(1<<k)] = (dp[j+(1<<k)] + dp[j]) % MOD;
     }
-    swap(dp, dpnext);
   }
   cout << dp[(1<<n) - 1] << endl;
 }
