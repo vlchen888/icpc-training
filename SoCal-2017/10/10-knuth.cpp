@@ -26,6 +26,7 @@ long long calc(vector<pair<int, int> > chain) {
 
       dp[start][end-1] = fixed + min_split_cost;
 
+      /*
       if(len > 2 && (best_split[start][end-1] < best_split[start][end-2] || best_split[start][end-1] > best_split[start+1][end-1])) {
         cout << "!!!!! KNUTH BAD !!!!!" << endl;
         for(int i = 0; i<n; ++i) {
@@ -35,6 +36,7 @@ long long calc(vector<pair<int, int> > chain) {
         cout << best_split[start][end-2] << " " << best_split[start][end-1] << " " << best_split[start+1][end-1] << endl;
         return -1;
       }
+      */
     }
   }
 
@@ -88,7 +90,6 @@ pair<int, int> process(string matrix) {
 }
 
 int main() {
-  /*
   string line;
   while(getline(cin, line)) {
     stringstream stream(line);
@@ -101,32 +102,5 @@ int main() {
     }
 
     cout << calc(chain) << endl;
-  }
-  */
-
-  srand((unsigned) time(0));
-  //const int MOD = 10000;
-  const int MOD = 100;
-  for(int chain_length = 3; chain_length < 1000; ++chain_length) {
-    vector<pair<int, int> > chain(chain_length);
-    chain[0].first = rand() % MOD;
-    chain[0].second = rand() % MOD;
-    for(int i = 1; i<chain_length; ++i) {
-      chain[i].first = chain[i-1].second;
-      chain[i].second = rand() % MOD;
-    }
-    
-    long long ret = calc(chain);
-    if(ret == -1) return 0;
-    //long long ret2 = calc_greedy(chain);
-    //cout << ret << " " << ret2 << endl;
-    //if(ret != ret2) {
-    //  for(auto v : chain) {
-    //    cout << v.first << " " << v.second << endl;
-    //  }
-    //}
-    //assert(ret == ret2);
-    //cout << ret << endl;
-    if(chain_length % 100 == 0) cout << chain_length << " " << ret << endl;
   }
 }

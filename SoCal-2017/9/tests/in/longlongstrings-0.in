@@ -1,0 +1,33 @@
+10
+D 1
+D 2
+E
+D 3
+D 1
+E
+5
+D 2
+D 1
+E
+D 1
+D 2
+E
+31
+I 1 X
+D 1
+E
+E
+255
+I 14 B
+I 14 A
+E
+I 14 A
+I 15 B
+E
+255
+I 14 A
+I 15 B
+E
+I 14 B
+I 15 A
+E
