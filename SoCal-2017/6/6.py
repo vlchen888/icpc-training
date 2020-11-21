@@ -13,7 +13,8 @@ def syllable_count(word):
     
     # Rule 2
     isconsonant = []
-    for i in range(len(word)):
+    i = 0
+    while i < len(word):
         letter = word[i]
         if letter not in "qaeiouy":
             isconsonant.append(True)
@@ -29,6 +30,7 @@ def syllable_count(word):
                     isconsonant.append(False)
             else:
                 isconsonant.append(False)
+        i += 1
 
     # Rule 4
     sylls = 1
