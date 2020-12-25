@@ -26,6 +26,7 @@ long long calc(vector<pair<int, int> > chain) {
 
       dp[start][end-1] = fixed + min_split_cost;
 
+      // Shows that Knuth DP doesn't work
       /*
       if(len > 2 && (best_split[start][end-1] < best_split[start][end-2] || best_split[start][end-1] > best_split[start+1][end-1])) {
         cout << "!!!!! KNUTH BAD !!!!!" << endl;
@@ -43,6 +44,7 @@ long long calc(vector<pair<int, int> > chain) {
   return dp[0][n-1] - chain[0].first * chain[n-1].second;
 }
 
+// INCORRECT greedy solution
 long long calc_greedy(vector<pair<int, int> > chain) {
   long long ret = 0;
   queue<pair<int, int> > q;
